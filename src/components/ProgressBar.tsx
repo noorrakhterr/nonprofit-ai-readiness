@@ -8,15 +8,12 @@ export default function ProgressBar({ current, total }: ProgressBarProps) {
 
   return (
     <div className="w-full">
-      <div className="flex justify-between text-sm text-slate-500 mb-1">
-        <span>
-          Question {current} of {total}
-        </span>
-        <span>{pct}%</span>
-      </div>
-      <div className="h-2 w-full rounded-full bg-slate-200">
+      <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-slate-400">
+        Question {current} of {total}
+      </p>
+      <div className="h-1.5 w-full rounded-full bg-slate-100">
         <div
-          className="h-2 rounded-full bg-indigo-600 transition-all duration-300"
+          className="h-1.5 rounded-full bg-brand-500 transition-all duration-300"
           style={{ width: `${pct}%` }}
         />
       </div>

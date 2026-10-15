@@ -1,11 +1,45 @@
 @import "tailwindcss";
 
+/* Palette sampled directly from Okta's live AI Readiness Assessment tool
+   (okta.com/assessments/ai-readiness): the checked-answer control samples to
+   #0131ff, a saturated indigo-blue. The "brand" steps form an ordinal ramp
+   (lightest -> darkest) anchored on that sampled value, used for the score
+   ring, since the result is a stage/progress, not an unordered category. */
+@theme {
+  --font-sans: "DM Sans", system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Lora", Georgia, serif;
+
+  --color-brand-100: #e4e7fb;
+  --color-brand-200: #c7cdf8;
+  --color-brand-300: #9ba6f6;
+  --color-brand-400: #4a56ee;
+  --color-brand-500: #0131ff;
+  --color-brand-600: #0027cc;
+  --color-brand-700: #001e99;
+  --color-navy-900: #1e1e1e;
+}
+
 :root {
   color-scheme: light;
 }
 
 body {
   margin: 0;
-  font-family: system-ui, "Segoe UI", Roboto, sans-serif;
-  background: #f7f7f9;
+  background: #fffdfb;
+  color: var(--color-navy-900);
+}
+
+/* Decorative-only wash sampled from the reference tool's header band
+   (orange -> magenta -> indigo -> blue -> pale lavender -> near-white).
+   Never used for text or interactive elements. */
+.bg-hero-gradient {
+  background: linear-gradient(
+    100deg,
+    #ee723f 0%,
+    #9d4da2 22%,
+    #6c44d9 40%,
+    #656ff5 55%,
+    #d3d9fb 75%,
+    #fffdfb 92%
+  );
 }

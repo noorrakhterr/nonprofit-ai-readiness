@@ -141,6 +141,50 @@ export const QUESTIONS: Question[] = [
 export const MIN_SCORE = 8
 export const MAX_SCORE = 32
 
+// Short topic label per question, used anywhere a question is referenced by
+// name rather than its full prompt (overview cards, opportunity callouts).
+export const QUESTION_TOPICS: Record<string, string> = {
+  q1: 'Familiarity with AI agents',
+  q2: 'AI tools in use',
+  q3: 'Visibility into tools and data',
+  q4: 'How tools sign in',
+  q5: 'What limits a tool’s actions',
+  q6: 'Setup, review, and removal',
+  q7: 'Written guidelines',
+  q8: 'Potential blast radius',
+}
+
+export interface Category {
+  id: string
+  label: string
+  description: string
+  questionIds: string[]
+}
+
+// Rolls the 8 questions up into 3 broader readiness pillars for the results
+// overview, grouped by theme from the source doc's "what each question
+// measures" table rather than shown as 8 separate line items.
+export const CATEGORIES: Category[] = [
+  {
+    id: 'awareness',
+    label: 'Awareness & Policy',
+    description: 'Understanding AI agents and having written guidelines for safe use.',
+    questionIds: ['q1', 'q7'],
+  },
+  {
+    id: 'access',
+    label: 'Access & Identity Controls',
+    description: 'Visibility into tools, how they sign in, and what limits their actions.',
+    questionIds: ['q3', 'q4', 'q5'],
+  },
+  {
+    id: 'governance',
+    label: 'Governance & Risk',
+    description: 'Tool oversight, ownership, and how much damage a compromised agent could do.',
+    questionIds: ['q2', 'q6', 'q8'],
+  },
+]
+
 export interface Resource {
   id: string
   title: string
@@ -194,6 +238,13 @@ export const RESOURCES: Record<string, Resource> = {
     // sharing yet. Keep this false until a nonprofit-safe version is published.
     externallyCleared: false,
   },
+  aiPolicies: {
+    id: 'aiPolicies',
+    title: 'AI Policies & Best Practices',
+    description: 'Guidance for writing AI use policies and following best practices for safe, responsible AI adoption.',
+    url: 'https://drive.google.com/file/d/1pM1fKqT2Vf8T0SoLSk40nyCqiFxt2UEw/view',
+    externallyCleared: true,
+  },
 }
 
 export type LevelId = 1 | 2 | 3 | 4
@@ -206,69 +257,72 @@ export interface LevelContent {
   mainMessage: string
   resourceIds: string[]
   nextSteps: string[]
-  oktaFollowUp: string
+  icon: string
 }
 
 export const LEVELS: LevelContent[] = [
   {
     id: 1,
     name: 'Level 1: Getting Oriented',
+    icon: '🛡️',
     scoreRange: [8, 14],
     whoThisIs:
       'An organization that is new to AI agents, or one that uses AI tools casually with no guidelines and little idea what the tools can reach.',
     mainMessage:
       'Start by understanding what AI agents are and why they are a risk. The habits you set now are easier than fixes later.',
-    resourceIds: ['blog', 'article'],
-    nextSteps: ['List the AI tools in use.', 'Name one person to approve new tools.'],
-    oktaFollowUp:
-      'An introductory conversation about getting started, including free and discounted nonprofit programs.',
+    resourceIds: ['blog', 'article', 'aiPolicies'],
+    nextSteps: [
+      'Create an inventory of all free and paid AI tools currently used by your team.',
+      'Assign one person to review and approve any new AI tools before they are used.',
+      'Contact your Okta Account Executive to learn more about Okta for AI Agents.',
+    ],
   },
   {
     id: 2,
     name: 'Level 2: Building Awareness',
+    icon: '💡',
     scoreRange: [15, 20],
     whoThisIs:
       'An organization that understands the basics and uses AI tools, but with informal controls: shared logins, broad access, and no written policy.',
     mainMessage: 'Move from awareness to a basic policy and basic identity controls.',
-    resourceIds: ['article', 'blog', 'sustainabilityGuide'],
+    resourceIds: ['article', 'blog', 'sustainabilityGuide', 'aiPolicies'],
     nextSteps: [
-      'Write a one-page AI use guideline.',
-      'Replace shared passwords with separate logins.',
-      'Require human approval for sensitive actions.',
+      'Replace shared passwords on AI accounts with separate, individual logins.',
+      'Establish a clear permissions framework to control exactly what files and data your AI tools can access.',
+      'Contact your Okta Account Executive to learn more about Okta for AI Agents.',
     ],
-    oktaFollowUp:
-      'Putting AI tools behind single sign-on and MFA, and giving each agent its own identity with a named owner.',
   },
   {
     id: 3,
     name: 'Level 3: Strengthening Controls',
+    icon: '⚙️',
     scoreRange: [21, 26],
     whoThisIs:
       'An organization with some structure, such as an owner for AI tools, separate accounts, and some access limits, but with inconsistent reviews and gaps in visibility.',
     mainMessage:
       'Make controls consistent and visible, especially around joiners and leavers, because volunteers and seasonal staff turn over.',
-    resourceIds: ['governanceBrochure', 'blog', 'oktaAssessment'],
+    resourceIds: ['governanceBrochure', 'blog', 'oktaAssessment', 'aiPolicies'],
     nextSteps: [
-      'Automate account removal.',
-      'Scope each agent to the minimum access it needs.',
-      'Schedule regular reviews of active agents.',
+      "Automate account removal so AI access is instantly revoked when an employee or volunteer leaves.",
+      "Limit each AI tool's permissions to only the specific files and folders it needs.",
+      'Contact your Okta Account Executive to learn more about Okta for AI Agents.',
     ],
-    oktaFollowUp: 'Discovering unmanaged agents, enforcing least privilege, and revoking access quickly.',
   },
   {
     id: 4,
     name: 'Level 4: Governing at Scale',
+    icon: '🚀',
     scoreRange: [27, 32],
     whoThisIs:
       'An organization that knows where its agents are, gives them limited identities, checks actions against policy, and has clear ownership.',
     mainMessage:
       'Keep it consistent as the number of agents grows, and be able to prove it to boards, funders, and auditors.',
-    resourceIds: ['governanceBrochure', 'oktaAssessment', 'article'],
+    resourceIds: ['governanceBrochure', 'oktaAssessment', 'article', 'aiPolicies'],
     nextSteps: [
-      'Confirm every agent action can be audited and access revoked immediately.',
-      'Test the response plan for a compromised agent.',
+      "Set up centralized controls so IT can instantly revoke an AI tool's active credentials and access.",
+      'Run a fire drill with IT to test how quickly you can isolate a compromised AI account or API key.',
+      'Email your Okta Account Executive to set up a demo of Okta for AI Agents.',
     ],
-    oktaFollowUp: 'Keeping governance consistent and audit-ready as agents multiply.',
   },
 ]
 
@@ -283,6 +337,7 @@ export function resourcesForLevel(level: LevelContent): Resource[] {
   return level.resourceIds.map((id) => RESOURCES[id]).filter((r) => r.externallyCleared)
 }
 
-// Placeholder destination for the Okta "contact us" CTA — the source doc leaves this
-// undecided. Swap this one constant once the team picks a page, form, or email.
-export const OKTA_CONTACT_URL = 'https://www.okta.com/contact-sales/'
+// "How Okta can help" offers two paths: a prospective customer talks to sales,
+// an existing customer goes to their account team via the Customer Success Hub.
+export const OKTA_CONTACT_SALES_URL = 'https://www.okta.com/contact-sales/'
+export const OKTA_SUCCESS_HUB_URL = 'https://support.okta.com/help/s/mysuccesshub/get-started?language=en_US'

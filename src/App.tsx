@@ -11,7 +11,7 @@ const router = createHashRouter([
 
 function App() {
   return (
-    <div className="min-h-screen bg-[#f7f7f9]">
+    <div className="min-h-screen bg-slate-50 font-sans">
       <RouterProvider router={router} />
     </div>
   )
